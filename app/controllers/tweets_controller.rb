@@ -37,7 +37,7 @@ post '/tweets' do
 
 
 
-get '/tweets/:id' do
+  get '/tweets/:id' do
     if logged_in?
       @tweet = Tweet.find_by_id(params[:id])
       erb :'tweets/show_tweet'
@@ -67,6 +67,7 @@ get '/tweets/:id' do
         redirect to "/tweets/#{params[:id]}/edit"
       else
         @tweet = Tweet.find_by_id(params[:id])
+        @user = User.find_by_id(session[:user_id])
         if @tweet && @tweet.user == current_user
           if @tweet.update(content: params[:content])
             redirect to "/tweets/#{@tweet.id}"
@@ -81,6 +82,7 @@ get '/tweets/:id' do
       redirect to '/login'
     end
   end
+
 
   delete '/tweets/:id/delete' do
     if logged_in?
