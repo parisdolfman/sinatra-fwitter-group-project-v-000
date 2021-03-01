@@ -8,21 +8,13 @@ get '/tweets' do
     redirect to '/login'
   end
 end
-    
-get '/tweets/new' do
-  if logged_in?
-    erb :'tweets/new'
-  else
-    redirect to '/login'
-  end
-end
-
 
 post '/tweets' do
     if logged_in?
       if params[:content] == ""
         redirect to "/tweets/new"
       else
+        @user = User.find_by_id(session[:user_id])
         @tweet = current_user.tweets.build(content: params[:content])
         if @tweet.save
           redirect to "/tweets/#{@tweet.id}"
@@ -34,6 +26,14 @@ post '/tweets' do
       redirect to '/login'
     end
   end
+    
+get '/tweets/new' do
+  if logged_in?
+    erb :'tweets/new'
+  else
+    redirect to '/login'
+  end
+end
 
 
 
