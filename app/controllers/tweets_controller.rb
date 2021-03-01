@@ -18,27 +18,39 @@ class TweetsController < ApplicationController
 
 end
 
-get '/tweets/:id' do
-    if logged_in?
-      @tweet = Tweet.find_by_id(params[:id])
-      erb :'tweets/show_tweet'
-    else
-      redirect to '/login'
-    end
-  end
+#NOTE: Below does not solve any errors
+# get '/tweets/:id' do
+#     case 
+#     when logged_in? == true 
+#       @tweet = Tweet.find_by_id(params[:id])
+#     when @tweet && @tweet.user == current_user
+#         erb :'tweets/edit_tweet'
+#     when @tweet.update(content: params[:content])
+#         redirect to "/tweets/#{@tweet.id}"
+#     when !!@tweet.update(content: params[:content])
+#         redirect to "/tweets/#{@tweet.id}/edit"
+#     when @tweet && !!@tweet.user == current_user
+#         redirect to '/tweets'
+#     else
+#         redirect to '/login'
+#       end
+#   end
 
-get '/tweets/:id/edit' do
-    if logged_in?
-      @tweet = Tweet.find_by_id(params[:id])
-      if @tweet && @tweet.user == current_user
-        erb :'tweets/edit_tweet'
-      else
-        redirect to '/tweets'
-      end
-    else
-      redirect to '/login'
-    end
-  end
+#NNOTE: Below is easiest written way by separation of responsibility. Looking to merge the get and post method.
+
+#  get '/tweets/:id/edit' do
+#    if logged_in?
+#       if @tweet && @tweet.user == current_user
+#       @tweet = Tweet.find_by_id(params[:id])
+#       if @tweet && @tweet.user == current_user
+#         erb :'tweets/edit_tweet'
+#       else
+#         redirect to '/tweets'
+#       end
+#     else
+#       redirect to '/login'
+#     end
+#   end
 
   post '/tweets' do
     if logged_in?
