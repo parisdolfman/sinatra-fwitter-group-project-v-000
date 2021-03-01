@@ -61,7 +61,7 @@ end
     end
   end
 
-  patch '/tweets/:id' do
+  patch '/tweets/:id/edit' do
     if logged_in?
       if params[:content] == ""
         redirect to "/tweets/#{params[:id]}/edit"
